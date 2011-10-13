@@ -2,8 +2,20 @@
 
 var gntp = require('GNTP');
 
+var gntpResponse = function (response){
+        console.log('Response Recieved');
+        console.log('Type:', response.type);
+        if( response.type === gntp.MessageTypeEnum.OK || response.type === gntp.MessageTypeEnum.ERROR ){
+            console.log('From:', response.headers.getHeader(gntp.HeaderEnum.responseAction).value);
+        }
+        var headers = response.headers.headers;
+        for( var i=0; i<headers.length; i++){
+            console.log(headers[i].name+':='+headers[i].value);
+        }
+    };
+
 var client = new gntp.Client();
-client.host = '192.168.11.6';
+client.host = '192.168.11.7';
 
 var app = new gntp.Application('Node.js');
 
@@ -15,12 +27,21 @@ notify.enabled = true;
 var appReq = app.toRequest();
 appReq.addNotification(notify);
 
-client.sendMessage(appReq.toRequest());
+//client.sendMessage(appReq.toRequest());
 
 var notReq = notify.toRequest();
 notReq.applicationName = app.name;
 notReq.text = 'testing Node.js';
 
-setInterval(function () {
-    client.sendMessage(notReq.toRequest());
-},1000);
+var msg = notReq.toRequest();
+msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
+
+msg.crypto = new gntp.Crypto('nodejs','sha1','des');
+
+
+setTimeout(function () {
+    console.log("sending...");
+    client.sendMessage(msg,gntpResponse);
+    console.log("sent...?");
+},3000);
+
