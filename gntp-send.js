@@ -15,7 +15,7 @@ var gntpResponse = function (response){
     };
 
 var client = new gntp.Client();
-client.host = '192.168.11.7';
+client.host = '192.168.11.57';
 
 var app = new gntp.Application('Node.js');
 
