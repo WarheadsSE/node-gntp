@@ -1,6 +1,9 @@
 
 
+var fs = require('fs');
 var gntp = require('GNTP');
+
+var icon = fs.readFileSync('./nodejs.jpg');
 
 var gntpResponse = function (response){
         console.log('Response Recieved');
@@ -15,9 +18,13 @@ var gntpResponse = function (response){
     };
 
 var client = new gntp.Client();
-client.host = '192.168.11.57';
+client.host = '192.168.11.7';
+
+client.on('sent',function () { console.log('sent');} );
+client.on('response',function (msg) { console.log('Response:  '+msg.type);});
 
 var app = new gntp.Application('Node.js');
+app.icon = icon;
 
 var notify = new gntp.Notification();
 notify.name = 'Test';
@@ -27,7 +34,7 @@ notify.enabled = true;
 var appReq = app.toRequest();
 appReq.addNotification(notify);
 
-//client.sendMessage(appReq.toRequest());
+client.sendMessage(appReq.toRequest());
 
 var notReq = notify.toRequest();
 notReq.applicationName = app.name;

@@ -4,7 +4,7 @@ var fs = require('fs');
 var gntp = require('GNTP');
 var rbytes = require('rbytes');
 
-function findEnd (buff){
+function findMessageEnd (buff){
     if( ( buff instanceof Buffer ) && buff.length >= 6){
         for( var i=0; i < buff.length -6; i++ ){
             if( buff[i+0] == 13 && buff[i+1] == 10 &&
@@ -37,14 +37,14 @@ server.on('connection',function (sock){
         
         data.copy(msg,recvd);
         console.log('SERVER RECV:'+data.length);
-        eol = findEnd(msg.slice((recvd >=eomLength?recvd-eomLength:recvd)));
+        eom = findMessageEnd(msg.slice((recvd >=eomLength?recvd-eomLength:recvd)));
         
         recvd+= data.length;
         
         var logFileU = fs.open('recv.log','a',null, function (err,fd){
             fs.writeSync(fd,data,0,data.length,recvd);
         });
-        if( eol >= 0 ){
+        if( eom >= 0 ){
             var message = new gntp.Message();
             message.parse(msg);
             parsed = true;
@@ -54,6 +54,12 @@ server.on('connection',function (sock){
     sock.on('close',function (){
         console.log('socket closed');
         console.log('RCVD:'+recvd);
+        // if the message wasn't parsed, attempt to parse it now.
+        if( !parsed ){
+            var message = new gntp.Message();
+            message.parse(msg);
+            parsed = true;
+        }
         console.log('good:'+(parsed?'yes':'no'));
     });
     setTimeout( function (){
