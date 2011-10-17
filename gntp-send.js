@@ -4,6 +4,7 @@ var fs = require('fs');
 var gntp = require('GNTP');
 
 var icon = fs.readFileSync('./nodejs.jpg');
+var warn_icon = fs.readFileSync('./warning_icon.jpg');
 
 var gntpResponse = function (response){
         console.log('Response Recieved');
@@ -39,6 +40,7 @@ client.sendMessage(appReq.toRequest());
 var notReq = notify.toRequest();
 notReq.applicationName = app.name;
 notReq.text = 'testing Node.js';
+notReq.icon = warn_icon;
 
 var msg = notReq.toRequest();
 msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
