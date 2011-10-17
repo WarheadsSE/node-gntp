@@ -19,7 +19,7 @@ var gntpResponse = function (response){
     };
 
 var client = new gntp.Client();
-client.host = '192.168.11.7';
+client.host = '192.168.11.6';
 
 client.on('sent',function () { console.log('sent');} );
 client.on('response',function (msg) { console.log('Response:  '+msg.type);});
@@ -45,7 +45,7 @@ notReq.icon = warn_icon;
 var msg = notReq.toRequest();
 msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
 
-msg.crypto = new gntp.Crypto('nodejs','sha1','des');
+msg.crypto = new gntp.Crypto('nodejs','sha1');//,'des');
 
 
 setTimeout(function () {
