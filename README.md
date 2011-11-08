@@ -7,6 +7,8 @@ Eventually, this will also provide the capability of being a forwarder source.
 * [Growl for Windows](http://www.growlforwindows.com)
 * [Growl for Mac](http://growl.info)
 
+This library is currently intended for use with node stable v0.6.0+
+
 At the moment this library is mostly functional as a sender, but is not exactly user friendly.
 
 ## Known todos
