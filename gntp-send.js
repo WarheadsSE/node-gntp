@@ -21,8 +21,8 @@ var gntpResponse = function (response){
 var client = new gntp.Client();
 client.host = '192.168.11.7';
 
-client.on('sent',function () { console.log('sent');} );
-client.on('response',function (msg) { console.log('Response:  '+msg.type);});
+//client.on('sent',function () { console.log('sent');} );
+//client.on('response',function (msg) { console.log('Response:  '+msg.type);});
 
 var app = new gntp.Application('Node.js');
 app.icon = icon;
@@ -40,7 +40,7 @@ client.sendMessage(aRmime);
 var notReq = notify.toRequest();
 notReq.applicationName = app.name;
 notReq.text = 'testing Node.js';
-notReq.icon = warn_icon;
+//notReq.icon = warn_icon;
 
 var msg = notReq.toRequest();
 msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
@@ -48,12 +48,16 @@ msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','
 msg.crypto = new gntp.Crypto('nodejs','sha1','des');
 
 
-client.on('response',gntpResponse)
-
+//client.on('response',gntpResponse)
+client.on('sent',function (){
+   client.sendMessage(msg);     
+});
+/*
 setInterval(function () {
 //setTimeout(function () {
     console.log("sending...");
     client.sendMessage(msg);
     console.log("sent...?");
-},1000);
+},300);
+*/
 
