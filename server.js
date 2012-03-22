@@ -79,6 +79,9 @@ if( cluster.isMaster ){
                 sock.end();
             }
         });
+        sock.on('end',function (){
+           sock.destroy(); 
+        });
         /*
         sock.on('close',function (){
             //console.log('socket closed '+id);
@@ -87,9 +90,12 @@ if( cluster.isMaster ){
             console.log('===');
         });
         */
+        /*
         setTimeout( function (){
             sock.end();
-        },3000);
+            console.log('=end=');
+        },2000);
+        */
     });
     server.listen(23053);
     console.log('Listening on GNTP service port (23053)');

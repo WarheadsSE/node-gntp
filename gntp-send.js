@@ -43,15 +43,18 @@ notReq.text = 'testing Node.js';
 //notReq.icon = warn_icon;
 
 var msg = notReq.toRequest();
-msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
+//msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
 
-msg.crypto = new gntp.Crypto('nodejs','sha1','des');
+//msg.crypto = new gntp.Crypto('nodejs','sha1','des');
 
-
+var counts=0, longcount=0, ticks=0;
+setInterval( function (){ticks++; console.log('messages processed / seconds: '+counts+'/sec ['+longcount+'/'+ticks+']'); longcount+=counts; counts = 0;},1000);
 //client.on('response',gntpResponse)
 client.on('sent',function (){
-   client.sendMessage(msg);     
+   counts++;
+   client.sendMessage(msg);
 });
+
 /*
 setInterval(function () {
 //setTimeout(function () {
