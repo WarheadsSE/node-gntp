@@ -1,7 +1,7 @@
 {
-  "name": "GNTP",
+  "name": "gntp",
   "version": "0.1.0",
-  "description": "Full, native, Growl Notification Transport Protocol implementation.",
+  "description": "Full, native, Growl Notification Transport Protocol (GNTP)implementation.",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,12 +11,12 @@
     "url": "git://github.com/WarheadsSE/node-gntp.git"
   },
   "keywords": [
-    "GNTP",
-    "Growl",
+    "gntp",
+    "growl",
     "notification",
     "server"
   ],
-  "author": "Jason Plum <max@warheads.net>",
+  "author": "WarheadsSE <max@warheads.net>",
   "engines": {
     "node": ">=0.6.0"
   }
