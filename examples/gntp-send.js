@@ -19,7 +19,7 @@ var gntpResponse = function (response){
     };
 
 var client = new gntp.Client();
-client.host = '192.168.11.18';
+client.host = '127.0.0.1';
 
 client.on('sent',function () { console.log('sent');} );
 client.on('response',function (msg) { console.log('Response:  '+msg.type);});
