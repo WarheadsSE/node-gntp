@@ -1,7 +1,7 @@
 
 
 var fs = require('fs');
-var gntp = require('GNTP');
+var gntp = require('../lib/index.js');
 
 var icon = fs.readFileSync('./nodejs.jpg');
 var warn_icon = fs.readFileSync('./warning_icon.jpg');
@@ -9,8 +9,8 @@ var warn_icon = fs.readFileSync('./warning_icon.jpg');
 var gntpResponse = function (response){
         console.log('Response Recieved');
         console.log('Type:', response.type);
-        if( response.type === gntp.MessageTypeEnum.OK || response.type === gntp.MessageTypeEnum.ERROR ){
-            console.log('From:', response.headers.getHeader(gntp.HeaderEnum.responseAction).value);
+        if( response.type === gntp.Constants.MessageTypeEnum.OK || response.type === gntp.Constants.MessageTypeEnum.ERROR ){
+            console.log('From:', response.headers.getHeader(gntp.Constants.HeaderEnum.responseAction).value);
         }
         var headers = response.headers.headers;
         for( var i=0; i<headers.length; i++){
@@ -19,10 +19,10 @@ var gntpResponse = function (response){
     };
 
 var client = new gntp.Client();
-client.host = '192.168.11.7';
+client.host = '192.168.11.18';
 
-//client.on('sent',function () { console.log('sent');} );
-//client.on('response',function (msg) { console.log('Response:  '+msg.type);});
+client.on('sent',function () { console.log('sent');} );
+client.on('response',function (msg) { console.log('Response:  '+msg.type);});
 
 var app = new gntp.Application('Node.js');
 app.icon = icon;
@@ -40,27 +40,20 @@ client.sendMessage(aRmime);
 var notReq = notify.toRequest();
 notReq.applicationName = app.name;
 notReq.text = 'testing Node.js';
-//notReq.icon = warn_icon;
+notReq.icon = warn_icon;
 
 var msg = notReq.toRequest();
-//msg.headers.addHeader(new gntp.Header(gntp.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
+msg.headers.addHeader(new gntp.Header(gntp.Constants.HeaderEnum.dataHeaderPrefix+'Blarg','blarg'));
 
-//msg.crypto = new gntp.Crypto('nodejs','sha1','des');
+msg.crypto = new gntp.Crypto('nodejs','sha1','des');
 
-var counts=0, longcount=0, ticks=0;
-setInterval( function (){ticks++; console.log('messages processed / seconds: '+counts+'/sec ['+longcount+'/'+ticks+']'); longcount+=counts; counts = 0;},1000);
-//client.on('response',gntpResponse)
-client.on('sent',function (){
-   counts++;
-   client.sendMessage(msg);
-});
 
-/*
+client.on('response',gntpResponse)
+
 setInterval(function () {
 //setTimeout(function () {
     console.log("sending...");
     client.sendMessage(msg);
     console.log("sent...?");
-},300);
-*/
+},1000);
 
