@@ -1,6 +1,6 @@
 {
   "name": "gntp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Full, native, Growl Notification Transport Protocol (GNTP)implementation.",
   "main": "lib/index.js",
   "scripts": {
